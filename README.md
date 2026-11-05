@@ -61,11 +61,3 @@ $$\text{Real Adjusted Salary} = \left( \frac{\text{Net Salary}}{\text{RPP Index}
 * `README.md`: Project documentation and executive findings.
 
 ---
-
-## 🌐 Viewing Online (GitHub Pages)
-
-1. Open your repository on **GitHub.com** in your browser.
-2. Click **Settings** (gear icon on the top menu).
-3. Click **Pages** in the left sidebar menu.
-4. Under **Branch**, select `main` and leave the folder set to `/(root)`, then click **Save**.
-5. GitHub will provide a link to your live report at `https://<your-username>.github.io/<repo-name>/`.
