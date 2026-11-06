@@ -1,0 +1,1241 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story 4: Data Practitioner Salary &amp; Purchasing Power Analysis</title>
+    <style>
+        :root {
+            --bg-main: #090d16;
+            --bg-card: #111827;
+            --bg-accent: #1e293b;
+            --border: #1f293d;
+            --border-hover: #334155;
+            --text-heading: #ffffff;
+            --text-body: #94a3b8;
+            --text-muted: #64748b;
+            --brand-primary: #38bdf8;
+            --brand-blue: #2563eb;
+            --brand-amber: #f59e0b;
+            --brand-emerald: #10b981;
+            --brand-rose: #f43f5e;
+            --brand-purple: #a855f7;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            line-height: 1.6;
+            padding: 40px 20px 80px 20px;
+        }
+
+        .container { max-width: 1240px; margin: 0 auto; }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.95) 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 44px 36px;
+            margin-bottom: 36px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--brand-primary);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 5px 14px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+            line-height: 1.25;
+        }
+
+        .hero-lead {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            max-width: 920px;
+            margin-bottom: 22px;
+        }
+
+        .callout {
+            padding: 14px 20px;
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 10px;
+            font-size: 0.92rem;
+            color: #6ee7b7;
+        }
+
+        .callout strong { color: #ffffff; }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+        }
+
+        .metric-number {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .metric-hint { font-size: 0.8rem; color: var(--text-body); }
+
+        .act-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 32px;
+            margin-bottom: 36px;
+        }
+
+        .act-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .act-header h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .act-subtitle { font-size: 0.92rem; color: var(--text-body); }
+
+        .act-tag {
+            font-size: 0.75rem;
+            font-family: monospace;
+            padding: 4px 10px;
+            background: var(--bg-accent);
+            border: 1px solid var(--border-hover);
+            color: var(--brand-primary);
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .narrative-p {
+            font-size: 0.96rem;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .takeaway-p {
+            background: rgba(30, 41, 59, 0.6);
+            border-left: 3px solid var(--brand-primary);
+            padding: 12px 18px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.92rem;
+            color: #e2e8f0;
+            margin-top: 18px;
+        }
+
+        .takeaway-p strong { color: var(--brand-primary); }
+
+        .chart-wrapper {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 24px 20px;
+            margin-top: 10px;
+            overflow-x: auto;
+        }
+
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .filter-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            background: var(--bg-accent);
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        .btn-role-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .btn-role {
+            background: #0f172a;
+            border: 1px solid var(--border-hover);
+            color: #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-role:hover {
+            background: #1e293b;
+            color: #ffffff;
+            border-color: var(--brand-primary);
+        }
+
+        .btn-role.active {
+            background: var(--brand-primary);
+            color: #090d16;
+            border-color: var(--brand-primary);
+            font-weight: 700;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: left;
+        }
+
+        th {
+            background: #0c1322;
+            color: #e2e8f0;
+            padding: 14px 16px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border);
+            font-size: 0.82rem;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #1a2436;
+            color: #cbd5e1;
+        }
+
+        .playbook-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .rule-card {
+            background: #0c1322;
+            border: 1px solid var(--border);
+            border-top: 4px solid var(--brand-primary);
+            border-radius: 8px;
+            padding: 22px;
+        }
+
+        .rule-card.emerald { border-top-color: var(--brand-emerald); }
+        .rule-card.amber { border-top-color: var(--brand-amber); }
+        .rule-card.rose { border-top-color: var(--brand-rose); }
+
+        .rule-num {
+            font-family: monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .rule-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .rule-body { font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="hero">
+        <span class="badge">Career Strategy &amp; Economic Intelligence</span>
+        <h1>Story 4: How Much Do We Really Get Paid?</h1>
+        <p class="hero-lead">
+            Deconstructing Job Offers: The Structural Gap Between Headline Salaries, State Income Taxes, and Regional Price Parities for Graduating Data Practitioners.
+        </p>
+        <div class="callout">
+            <strong>Audience Briefing:</strong> Tailored for graduating students evaluating incoming offers across roles (Data Analyst, Business Analyst, Data Scientist, Data Engineer, Data Architect) and deciding whether high nominal compensation in California or New York outperforms lower-tax markets like Washington and Texas (U.S. BLS OEWS &amp; BEA RPP)[cite: 1].
+        </div>
+    </header>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-label">Nominal Gross Peak</div>
+            <div class="metric-number">$151,040</div>
+            <div class="metric-hint">California Data Scientist (Base &times; 1.18 Multiplier)</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Real Purchasing Power</div>
+            <div class="metric-number" style="color: var(--brand-amber);">$121,772</div>
+            <div class="metric-hint">CA Take-Home After 9.3% Tax &amp; 112.5 RPP Price Drag</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Top Real Value State</div>
+            <div class="metric-number" style="color: var(--brand-emerald);">$133,024</div>
+            <div class="metric-hint">Washington (0% State Tax Preserves Full Base Value)</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Coastal Purchasing Penalty</div>
+            <div class="metric-number" style="color: var(--brand-rose);">-$11,252</div>
+            <div class="metric-hint">Annual Net Loss of CA vs. WA for the Same Role</div>
+        </div>
+    </div>
+
+    <!-- ACT I -->
+    <section class="act-container">
+        <div class="act-header">
+            <div class="act-title-group">
+                <h2>Act I: The Nominal Mirage &mdash; Why a $150k Offer Can Yield Less than $130k</h2>
+                <div class="act-subtitle">Compare baseline gross contract compensation against true purchasing power after tax schedules and price parity adjustments (Tax Foundation &amp; BEA RPP)[cite: 1].</div>
+            </div>
+            <span class="act-tag">DIVERGING ANALYSIS</span>
+        </div>
+
+        <p class="narrative-p">
+            When you graduate, your first instinct is to rank job offers by the headline number on page one of your offer letter[cite: 1]. A $151,000 offer in San Francisco or a $147,000 offer in New York looks like an undisputed win over a $125,000 offer in Austin or Raleigh. However, purchasing power depends on <strong>what you keep</strong>, divided by <strong>what things cost</strong> (U.S. Bureau of Economic Analysis)[cite: 1]. By applying state individual income taxes and the U.S. Bureau of Economic Analysis (BEA) Regional Price Parities (RPP), we reveal the genuine bottom line[cite: 1].
+        </p>
+
+        <div class="filter-toolbar">
+            <span class="filter-label">Select Practitioner Role:</span>
+            <div class="btn-role-group">
+                <button class="btn-role" data-role="Business_Analyst" onclick="showRole('Business_Analyst')">Business Analyst</button>
+                <button class="btn-role" data-role="Data_Analyst" onclick="showRole('Data_Analyst')">Data Analyst</button>
+                <button class="btn-role active" data-role="Data_Scientist" onclick="showRole('Data_Scientist')">Data Scientist</button>
+                <button class="btn-role" data-role="Data_Engineer" onclick="showRole('Data_Engineer')">Data Engineer</button>
+                <button class="btn-role" data-role="Data_Architect" onclick="showRole('Data_Architect')">Data Architect</button>
+            </div>
+        </div>
+
+        <div class="chart-wrapper">
+            <svg id="svgDiverging_Data_Scientist" class="diverging-chart" viewBox="0 0 1100 520" preserveAspectRatio="xMidYMid meet" style="display: block;">
+                <text x="140" y="22" font-size="12" font-weight="bold" fill="#0f172a">Nominal Gross Salary vs. Real Purchasing Power (Data Scientist)</text>
+                <rect x="700" y="10" width="14" height="14" rx="3" fill="#1d4ed8"/>
+                <text x="720" y="22" font-size="11" font-weight="600" fill="#334155">Nominal Gross</text>
+                <rect x="830" y="10" width="14" height="14" rx="3" fill="#d97706"/>
+                <text x="850" y="22" font-size="11" font-weight="600" fill="#334155">Real Adjusted</text>
+                <text x="128" y="62" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">California</text>
+                <line x1="140" y1="82" x2="1060" y2="82" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="40" width="728.4" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="876.4" y="52" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$151,040</text>
+                <rect x="140" y="58" width="587.2" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="735.2" y="70" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$121,772</text>
+                <text x="128" y="108" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">New York</text>
+                <line x1="140" y1="128" x2="1060" y2="128" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="86" width="709.9" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="857.9" y="98" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$147,200</text>
+                <rect x="140" y="104" width="600.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="748.0" y="116" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$124,426</text>
+                <text x="128" y="154" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Washington</text>
+                <line x1="140" y1="174" x2="1060" y2="174" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="132" width="691.3" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="839.3" y="144" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$143,360</text>
+                <rect x="140" y="150" width="641.3" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="789.3" y="162" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$132,987</text>
+                <text x="128" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Massachusetts</text>
+                <line x1="140" y1="220" x2="1060" y2="220" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="178" width="679.0" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="827.0" y="190" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$140,800</text>
+                <rect x="140" y="196" width="595.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="743.0" y="208" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$123,395</text>
+                <text x="128" y="246" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Colorado</text>
+                <line x1="140" y1="266" x2="1060" y2="266" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="224" width="629.6" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="777.6" y="236" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$130,560</text>
+                <rect x="140" y="242" width="583.2" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="731.2" y="254" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$120,945</text>
+                <text x="128" y="292" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Illinois</text>
+                <line x1="140" y1="312" x2="1060" y2="312" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="270" width="617.2" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="765.2" y="282" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$128,000</text>
+                <rect x="140" y="288" width="597.5" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="745.5" y="300" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$123,894</text>
+                <text x="128" y="338" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Texas</text>
+                <line x1="140" y1="358" x2="1060" y2="358" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="316" width="604.9" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="752.9" y="328" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$125,440</text>
+                <rect x="140" y="334" width="621.1" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="769.1" y="346" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$128,789</text>
+                <text x="128" y="384" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">North Carolina</text>
+                <line x1="140" y1="404" x2="1060" y2="404" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="362" width="586.4" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="734.4" y="374" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$121,600</text>
+                <rect x="140" y="380" width="592.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="740.0" y="392" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$122,757</text>
+                <text x="128" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Florida</text>
+                <line x1="140" y1="450" x2="1060" y2="450" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="408" width="580.2" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="728.2" y="420" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$120,320</text>
+                <rect x="140" y="426" width="573.9" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="721.9" y="438" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$119,011</text>
+                <text x="128" y="476" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Ohio</text>
+                <line x1="140" y1="496" x2="1060" y2="496" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="454" width="555.5" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="703.5" y="466" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$115,200</text>
+                <rect x="140" y="472" width="585.9" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="733.9" y="484" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$121,495</text>
+            </svg>
+
+            <svg id="svgDiverging_Data_Analyst" class="diverging-chart" viewBox="0 0 1100 520" preserveAspectRatio="xMidYMid meet" style="display: none;">
+                <text x="140" y="22" font-size="12" font-weight="bold" fill="#0f172a">Nominal Gross Salary vs. Real Purchasing Power (Data Analyst)</text>
+                <rect x="700" y="10" width="14" height="14" rx="3" fill="#1d4ed8"/>
+                <text x="720" y="22" font-size="11" font-weight="600" fill="#334155">Nominal Gross</text>
+                <rect x="830" y="10" width="14" height="14" rx="3" fill="#d97706"/>
+                <text x="850" y="22" font-size="11" font-weight="600" fill="#334155">Real Adjusted</text>
+                <text x="128" y="62" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">California</text>
+                <line x1="140" y1="82" x2="1060" y2="82" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="40" width="728.4" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="876.4" y="52" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$100,300</text>
+                <rect x="140" y="58" width="587.2" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="735.2" y="70" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$80,864</text>
+                <text x="128" y="108" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">New York</text>
+                <line x1="140" y1="128" x2="1060" y2="128" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="86" width="709.9" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="857.9" y="98" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$97,750</text>
+                <rect x="140" y="104" width="600.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="748.0" y="116" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$82,626</text>
+                <text x="128" y="154" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Washington</text>
+                <line x1="140" y1="174" x2="1060" y2="174" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="132" width="691.3" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="839.3" y="144" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$95,200</text>
+                <rect x="140" y="150" width="641.3" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="789.3" y="162" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$88,312</text>
+                <text x="128" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Massachusetts</text>
+                <line x1="140" y1="220" x2="1060" y2="220" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="178" width="679.0" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="827.0" y="190" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$93,500</text>
+                <rect x="140" y="196" width="595.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="743.0" y="208" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$81,942</text>
+                <text x="128" y="246" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Colorado</text>
+                <line x1="140" y1="266" x2="1060" y2="266" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="224" width="629.6" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="777.6" y="236" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$86,700</text>
+                <rect x="140" y="242" width="583.2" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="731.2" y="254" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$80,315</text>
+                <text x="128" y="292" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Illinois</text>
+                <line x1="140" y1="312" x2="1060" y2="312" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="270" width="617.2" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="765.2" y="282" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$85,000</text>
+                <rect x="140" y="288" width="597.5" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="745.5" y="300" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$82,273</text>
+                <text x="128" y="338" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Texas</text>
+                <line x1="140" y1="358" x2="1060" y2="358" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="316" width="604.9" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="752.9" y="328" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$83,300</text>
+                <rect x="140" y="334" width="621.1" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="769.1" y="346" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$85,524</text>
+                <text x="128" y="384" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">North Carolina</text>
+                <line x1="140" y1="404" x2="1060" y2="404" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="362" width="586.4" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="734.4" y="374" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$80,750</text>
+                <rect x="140" y="380" width="592.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="740.0" y="392" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$81,518</text>
+                <text x="128" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Florida</text>
+                <line x1="140" y1="450" x2="1060" y2="450" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="408" width="580.2" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="728.2" y="420" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$79,900</text>
+                <rect x="140" y="426" width="573.9" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="721.9" y="438" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$79,031</text>
+                <text x="128" y="476" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Ohio</text>
+                <line x1="140" y1="496" x2="1060" y2="496" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="454" width="555.5" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="703.5" y="466" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$76,500</text>
+                <rect x="140" y="472" width="585.9" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="733.9" y="484" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$80,680</text>
+            </svg>
+
+            <svg id="svgDiverging_Business_Analyst" class="diverging-chart" viewBox="0 0 1100 520" preserveAspectRatio="xMidYMid meet" style="display: none;">
+                <text x="140" y="22" font-size="12" font-weight="bold" fill="#0f172a">Nominal Gross Salary vs. Real Purchasing Power (Business Analyst)</text>
+                <rect x="700" y="10" width="14" height="14" rx="3" fill="#1d4ed8"/>
+                <text x="720" y="22" font-size="11" font-weight="600" fill="#334155">Nominal Gross</text>
+                <rect x="830" y="10" width="14" height="14" rx="3" fill="#d97706"/>
+                <text x="850" y="22" font-size="11" font-weight="600" fill="#334155">Real Adjusted</text>
+                <text x="128" y="62" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">California</text>
+                <line x1="140" y1="82" x2="1060" y2="82" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="40" width="728.4" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="876.4" y="52" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$103,840</text>
+                <rect x="140" y="58" width="587.2" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="735.2" y="70" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$83,718</text>
+                <text x="128" y="108" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">New York</text>
+                <line x1="140" y1="128" x2="1060" y2="128" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="86" width="709.9" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="857.9" y="98" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$101,200</text>
+                <rect x="140" y="104" width="600.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="748.0" y="116" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$85,543</text>
+                <text x="128" y="154" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Washington</text>
+                <line x1="140" y1="174" x2="1060" y2="174" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="132" width="691.3" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="839.3" y="144" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$98,560</text>
+                <rect x="140" y="150" width="641.3" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="789.3" y="162" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$91,429</text>
+                <text x="128" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Massachusetts</text>
+                <line x1="140" y1="220" x2="1060" y2="220" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="178" width="679.0" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="827.0" y="190" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$96,800</text>
+                <rect x="140" y="196" width="595.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="743.0" y="208" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$84,834</text>
+                <text x="128" y="246" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Colorado</text>
+                <line x1="140" y1="266" x2="1060" y2="266" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="224" width="629.6" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="777.6" y="236" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$89,760</text>
+                <rect x="140" y="242" width="583.2" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="731.2" y="254" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$83,150</text>
+                <text x="128" y="292" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Illinois</text>
+                <line x1="140" y1="312" x2="1060" y2="312" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="270" width="617.2" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="765.2" y="282" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$88,000</text>
+                <rect x="140" y="288" width="597.5" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="745.5" y="300" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$85,177</text>
+                <text x="128" y="338" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Texas</text>
+                <line x1="140" y1="358" x2="1060" y2="358" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="316" width="604.9" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="752.9" y="328" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$86,240</text>
+                <rect x="140" y="334" width="621.1" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="769.1" y="346" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$88,542</text>
+                <text x="128" y="384" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">North Carolina</text>
+                <line x1="140" y1="404" x2="1060" y2="404" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="362" width="586.4" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="734.4" y="374" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$83,600</text>
+                <rect x="140" y="380" width="592.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="740.0" y="392" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$84,395</text>
+                <text x="128" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Florida</text>
+                <line x1="140" y1="450" x2="1060" y2="450" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="408" width="580.2" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="728.2" y="420" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$82,720</text>
+                <rect x="140" y="426" width="573.9" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="721.9" y="438" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$81,820</text>
+                <text x="128" y="476" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Ohio</text>
+                <line x1="140" y1="496" x2="1060" y2="496" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="454" width="555.5" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="703.5" y="466" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$79,200</text>
+                <rect x="140" y="472" width="585.9" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="733.9" y="484" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$83,528</text>
+            </svg>
+
+            <svg id="svgDiverging_Data_Engineer" class="diverging-chart" viewBox="0 0 1100 520" preserveAspectRatio="xMidYMid meet" style="display: none;">
+                <text x="140" y="22" font-size="12" font-weight="bold" fill="#0f172a">Nominal Gross Salary vs. Real Purchasing Power (Data Engineer)</text>
+                <rect x="700" y="10" width="14" height="14" rx="3" fill="#1d4ed8"/>
+                <text x="720" y="22" font-size="11" font-weight="600" fill="#334155">Nominal Gross</text>
+                <rect x="830" y="10" width="14" height="14" rx="3" fill="#d97706"/>
+                <text x="850" y="22" font-size="11" font-weight="600" fill="#334155">Real Adjusted</text>
+                <text x="128" y="62" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">California</text>
+                <line x1="140" y1="82" x2="1060" y2="82" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="40" width="728.4" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="876.4" y="52" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$159,300</text>
+                <rect x="140" y="58" width="587.2" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="735.2" y="70" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$128,431</text>
+                <text x="128" y="108" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">New York</text>
+                <line x1="140" y1="128" x2="1060" y2="128" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="86" width="709.9" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="857.9" y="98" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$155,250</text>
+                <rect x="140" y="104" width="600.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="748.0" y="116" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$131,230</text>
+                <text x="128" y="154" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Washington</text>
+                <line x1="140" y1="174" x2="1060" y2="174" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="132" width="691.3" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="839.3" y="144" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$151,200</text>
+                <rect x="140" y="150" width="641.3" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="789.3" y="162" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$140,260</text>
+                <text x="128" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Massachusetts</text>
+                <line x1="140" y1="220" x2="1060" y2="220" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="178" width="679.0" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="827.0" y="190" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$148,500</text>
+                <rect x="140" y="196" width="595.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="743.0" y="208" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$130,143</text>
+                <text x="128" y="246" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Colorado</text>
+                <line x1="140" y1="266" x2="1060" y2="266" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="224" width="629.6" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="777.6" y="236" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$137,700</text>
+                <rect x="140" y="242" width="583.2" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="731.2" y="254" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$127,559</text>
+                <text x="128" y="292" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Illinois</text>
+                <line x1="140" y1="312" x2="1060" y2="312" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="270" width="617.2" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="765.2" y="282" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$135,000</text>
+                <rect x="140" y="288" width="597.5" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="745.5" y="300" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$130,670</text>
+                <text x="128" y="338" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Texas</text>
+                <line x1="140" y1="358" x2="1060" y2="358" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="316" width="604.9" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="752.9" y="328" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$132,300</text>
+                <rect x="140" y="334" width="621.1" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="769.1" y="346" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$135,832</text>
+                <text x="128" y="384" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">North Carolina</text>
+                <line x1="140" y1="404" x2="1060" y2="404" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="362" width="586.4" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="734.4" y="374" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$128,250</text>
+                <rect x="140" y="380" width="592.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="740.0" y="392" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$129,470</text>
+                <text x="128" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Florida</text>
+                <line x1="140" y1="450" x2="1060" y2="450" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="408" width="580.2" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="728.2" y="420" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$126,900</text>
+                <rect x="140" y="426" width="573.9" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="721.9" y="438" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$125,519</text>
+                <text x="128" y="476" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Ohio</text>
+                <line x1="140" y1="496" x2="1060" y2="496" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="454" width="555.5" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="703.5" y="466" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$121,500</text>
+                <rect x="140" y="472" width="585.9" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="733.9" y="484" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$128,140</text>
+            </svg>
+
+            <svg id="svgDiverging_Data_Architect" class="diverging-chart" viewBox="0 0 1100 520" preserveAspectRatio="xMidYMid meet" style="display: none;">
+                <text x="140" y="22" font-size="12" font-weight="bold" fill="#0f172a">Nominal Gross Salary vs. Real Purchasing Power (Data Architect)</text>
+                <rect x="700" y="10" width="14" height="14" rx="3" fill="#1d4ed8"/>
+                <text x="720" y="22" font-size="11" font-weight="600" fill="#334155">Nominal Gross</text>
+                <rect x="830" y="10" width="14" height="14" rx="3" fill="#d97706"/>
+                <text x="850" y="22" font-size="11" font-weight="600" fill="#334155">Real Adjusted</text>
+                <text x="128" y="62" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">California</text>
+                <line x1="140" y1="82" x2="1060" y2="82" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="40" width="728.4" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="876.4" y="52" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$182,900</text>
+                <rect x="140" y="58" width="587.2" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="735.2" y="70" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$147,458</text>
+                <text x="128" y="108" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">New York</text>
+                <line x1="140" y1="128" x2="1060" y2="128" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="86" width="709.9" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="857.9" y="98" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$178,250</text>
+                <rect x="140" y="104" width="600.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="748.0" y="116" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$150,672</text>
+                <text x="128" y="154" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Washington</text>
+                <line x1="140" y1="174" x2="1060" y2="174" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="132" width="691.3" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="839.3" y="144" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$173,600</text>
+                <rect x="140" y="150" width="641.3" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="789.3" y="162" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$161,039</text>
+                <text x="128" y="200" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Massachusetts</text>
+                <line x1="140" y1="220" x2="1060" y2="220" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="178" width="679.0" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="827.0" y="190" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$170,500</text>
+                <rect x="140" y="196" width="595.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="743.0" y="208" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$149,423</text>
+                <text x="128" y="246" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Colorado</text>
+                <line x1="140" y1="266" x2="1060" y2="266" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="224" width="629.6" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="777.6" y="236" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$158,100</text>
+                <rect x="140" y="242" width="583.2" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="731.2" y="254" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$146,457</text>
+                <text x="128" y="292" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Illinois</text>
+                <line x1="140" y1="312" x2="1060" y2="312" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="270" width="617.2" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="765.2" y="282" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$155,000</text>
+                <rect x="140" y="288" width="597.5" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="745.5" y="300" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$150,029</text>
+                <text x="128" y="338" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Texas</text>
+                <line x1="140" y1="358" x2="1060" y2="358" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="316" width="604.9" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="752.9" y="328" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$151,900</text>
+                <rect x="140" y="334" width="621.1" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="769.1" y="346" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$155,955</text>
+                <text x="128" y="384" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">North Carolina</text>
+                <line x1="140" y1="404" x2="1060" y2="404" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="362" width="586.4" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="734.4" y="374" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$147,250</text>
+                <rect x="140" y="380" width="592.0" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="740.0" y="392" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$148,651</text>
+                <text x="128" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Florida</text>
+                <line x1="140" y1="450" x2="1060" y2="450" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="408" width="580.2" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="728.2" y="420" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$145,700</text>
+                <rect x="140" y="426" width="573.9" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="721.9" y="438" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$144,115</text>
+                <text x="128" y="476" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="end">Ohio</text>
+                <line x1="140" y1="496" x2="1060" y2="496" stroke="#f1f5f9" stroke-width="1"/>
+                <rect x="140" y="454" width="555.5" height="16" rx="3" fill="#1d4ed8" opacity="0.95"/>
+                <text x="703.5" y="466" font-size="10.5" font-weight="bold" fill="#1d4ed8" font-family="monospace">$139,500</text>
+                <rect x="140" y="472" width="585.9" height="16" rx="3" fill="#d97706" opacity="0.95"/>
+                <text x="733.9" y="484" font-size="10.5" font-weight="bold" fill="#b45309" font-family="monospace">$147,122</text>
+            </svg>
+        </div>
+
+        <p class="takeaway-p">
+            <strong>Key Insight for Grads:</strong> In California and New York, high statutory tax rates (up to 9.3%) compounded by living costs 10&ndash;12.5% above national average produce a ~$25k&ndash;$30k purchasing power contraction (Tax Foundation &amp; BEA RPP)[cite: 1]. Washington and Texas consistently beat out coastal hubs on real disposable income.
+        </p>
+    </section>
+
+    <!-- ACT II -->
+    <section class="act-container">
+        <div class="act-header">
+            <div class="act-title-group">
+                <h2>Act II: The Specialization Ladder &mdash; Which Roles Outrun the Cost of Living?</h2>
+                <div class="act-subtitle">A cross-role matrix evaluating real take-home margins across five core data career trajectories.</div>
+            </div>
+            <span class="act-tag">ROLE MATRIX</span>
+        </div>
+
+        <p class="narrative-p">
+            Different data roles experience geographic inflation differently across technical specializations[cite: 1]. Infrastructure and architecture specializations (Data Engineers and Data Architects) command substantial technical premiums ($135k&ndash;$155k baseline) that provide enough economic cushion to comfortably absorb high-cost metropolitan drag (BLS Occupational Employment &amp; Wage Statistics)[cite: 1]. In contrast, early-career Data Analysts and Business Analysts face acute compression in high-COL cities, where rent and taxes absorb an outsized percentage of pre-tax wages (BEA Cost of Living Index)[cite: 1].
+        </p>
+
+        <div class="chart-wrapper">
+            <svg id="svgMatrix" viewBox="0 0 1100 560" preserveAspectRatio="xMidYMid meet">
+                <text x="50" y="24" font-size="13" font-weight="bold" fill="#0f172a">Real Purchasing Power Matrix Across All Data Roles &amp; States</text>
+                <rect x="480" y="14" width="12" height="12" rx="2" fill="#0284c7"/>
+                <text x="496" y="24" font-size="10.5" font-weight="600" fill="#334155">Business</text>
+                <rect x="604" y="14" width="12" height="12" rx="2" fill="#0d9488"/>
+                <text x="620" y="24" font-size="10.5" font-weight="600" fill="#334155">Data</text>
+                <rect x="728" y="14" width="12" height="12" rx="2" fill="#2563eb"/>
+                <text x="744" y="24" font-size="10.5" font-weight="600" fill="#334155">Data Sci</text>
+                <rect x="852" y="14" width="12" height="12" rx="2" fill="#7c3aed"/>
+                <text x="868" y="24" font-size="10.5" font-weight="600" fill="#334155">Data Eng</text>
+                <rect x="976" y="14" width="12" height="12" rx="2" fill="#b45309"/>
+                <text x="992" y="24" font-size="10.5" font-weight="600" fill="#334155">Data Arch</text>
+
+                <line x1="60" y1="336.6" x2="1060" y2="336.6" stroke="#f1f5f9" stroke-width="1"/>
+                <text x="52" y="340.6" font-size="10" fill="#94a3b8" text-anchor="end">$60k</text>
+                <line x1="60" y1="274.8" x2="1060" y2="274.8" stroke="#f1f5f9" stroke-width="1"/>
+                <text x="52" y="278.8" font-size="10" fill="#94a3b8" text-anchor="end">$90k</text>
+                <line x1="60" y1="213.1" x2="1060" y2="213.1" stroke="#f1f5f9" stroke-width="1"/>
+                <text x="52" y="217.1" font-size="10" fill="#94a3b8" text-anchor="end">$120k</text>
+                <line x1="60" y1="151.4" x2="1060" y2="151.4" stroke="#f1f5f9" stroke-width="1"/>
+                <text x="52" y="155.4" font-size="10" fill="#94a3b8" text-anchor="end">$150k</text>
+
+                <text x="104" y="480" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">Washington</text>
+                <rect x="60" y="271.9" width="15" height="188.1" rx="2" fill="#0284c7"/>
+                <text x="67.5" y="267.9" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">91</text>
+                <rect x="77" y="278.3" width="15" height="181.7" rx="2" fill="#0d9488"/>
+                <text x="84.5" y="274.3" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">88</text>
+                <rect x="94" y="186.4" width="15" height="273.6" rx="2" fill="#2563eb"/>
+                <text x="101.5" y="182.4" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">133</text>
+                <rect x="111" y="171.5" width="15" height="288.5" rx="2" fill="#7c3aed"/>
+                <text x="118.5" y="167.5" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">140</text>
+                <rect x="128" y="128.7" width="15" height="331.3" rx="2" fill="#b45309"/>
+                <text x="135.5" y="124.7" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">161</text>
+
+                <text x="204" y="480" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">Texas</text>
+                <rect x="160" y="277.8" width="15" height="182.1" rx="2" fill="#0284c7"/>
+                <text x="167.5" y="273.8" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">89</text>
+                <rect x="177" y="284.0" width="15" height="176.0" rx="2" fill="#0d9488"/>
+                <text x="184.5" y="280.0" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">86</text>
+                <rect x="194" y="195.1" width="15" height="264.9" rx="2" fill="#2563eb"/>
+                <text x="201.5" y="191.1" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">129</text>
+                <rect x="211" y="180.6" width="15" height="279.4" rx="2" fill="#7c3aed"/>
+                <text x="218.5" y="176.6" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">136</text>
+                <rect x="228" y="139.2" width="15" height="320.8" rx="2" fill="#b45309"/>
+                <text x="235.5" y="135.2" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">156</text>
+
+                <text x="304" y="480" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">New York</text>
+                <rect x="260" y="284.0" width="15" height="176.0" rx="2" fill="#0284c7"/>
+                <text x="267.5" y="280.0" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">86</text>
+                <rect x="277" y="290.0" width="15" height="170.0" rx="2" fill="#0d9488"/>
+                <text x="284.5" y="286.0" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">83</text>
+                <rect x="294" y="204.0" width="15" height="256.0" rx="2" fill="#2563eb"/>
+                <text x="301.5" y="200.0" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">124</text>
+                <rect x="311" y="190.0" width="15" height="270.0" rx="2" fill="#7c3aed"/>
+                <text x="318.5" y="186.0" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">131</text>
+                <rect x="328" y="150.0" width="15" height="310.0" rx="2" fill="#b45309"/>
+                <text x="335.5" y="146.0" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">151</text>
+
+                <text x="404" y="480" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">Illinois</text>
+                <rect x="360" y="284.7" width="15" height="175.3" rx="2" fill="#0284c7"/>
+                <text x="367.5" y="280.7" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">85</text>
+                <rect x="377" y="290.7" width="15" height="169.3" rx="2" fill="#0d9488"/>
+                <text x="384.5" y="286.7" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">82</text>
+                <rect x="394" y="205.1" width="15" height="254.9" rx="2" fill="#2563eb"/>
+                <text x="401.5" y="201.1" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">124</text>
+                <rect x="411" y="191.2" width="15" height="268.8" rx="2" fill="#7c3aed"/>
+                <text x="418.5" y="187.2" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">131</text>
+                <rect x="428" y="151.3" width="15" height="308.7" rx="2" fill="#b45309"/>
+                <text x="435.5" y="147.3" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">150</text>
+
+                <text x="504" y="480" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">Massachusetts</text>
+                <rect x="460" y="285.4" width="15" height="174.6" rx="2" fill="#0284c7"/>
+                <text x="467.5" y="281.4" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">85</text>
+                <rect x="477" y="291.4" width="15" height="168.6" rx="2" fill="#0d9488"/>
+                <text x="484.5" y="287.4" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">82</text>
+                <rect x="494" y="206.2" width="15" height="253.8" rx="2" fill="#2563eb"/>
+                <text x="501.5" y="202.2" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">123</text>
+                <rect x="511" y="192.3" width="15" height="267.7" rx="2" fill="#7c3aed"/>
+                <text x="518.5" y="188.3" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">130</text>
+                <rect x="528" y="152.6" width="15" height="307.4" rx="2" fill="#b45309"/>
+                <text x="535.5" y="148.6" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">149</text>
+
+                <text x="604" y="480" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">North Carolina</text>
+                <rect x="560" y="286.3" width="15" height="173.7" rx="2" fill="#0284c7"/>
+                <text x="567.5" y="282.3" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">84</text>
+                <rect x="577" y="292.3" width="15" height="167.7" rx="2" fill="#0d9488"/>
+                <text x="584.5" y="288.3" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">82</text>
+                <rect x="594" y="207.5" width="15" height="252.5" rx="2" fill="#2563eb"/>
+                <text x="601.5" y="203.5" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">123</text>
+                <rect x="611" y="193.7" width="15" height="266.3" rx="2" fill="#7c3aed"/>
+                <text x="618.5" y="189.7" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">129</text>
+                <rect x="628" y="154.2" width="15" height="305.8" rx="2" fill="#b45309"/>
+                <text x="635.5" y="150.2" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">149</text>
+
+                <text x="704" y="480" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">California</text>
+                <rect x="660" y="287.7" width="15" height="172.3" rx="2" fill="#0284c7"/>
+                <text x="667.5" y="283.7" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">84</text>
+                <rect x="677" y="293.6" width="15" height="166.4" rx="2" fill="#0d9488"/>
+                <text x="684.5" y="289.6" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">81</text>
+                <rect x="694" y="209.5" width="15" height="250.5" rx="2" fill="#2563eb"/>
+                <text x="701.5" y="205.5" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">122</text>
+                <rect x="711" y="195.8" width="15" height="264.2" rx="2" fill="#7c3aed"/>
+                <text x="718.5" y="191.8" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">128</text>
+                <rect x="728" y="156.6" width="15" height="303.4" rx="2" fill="#b45309"/>
+                <text x="735.5" y="152.6" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">147</text>
+
+                <text x="804" y="480" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">Ohio</text>
+                <rect x="760" y="288.1" width="15" height="171.9" rx="2" fill="#0284c7"/>
+                <text x="767.5" y="284.1" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">84</text>
+                <rect x="777" y="294.0" width="15" height="166.0" rx="2" fill="#0d9488"/>
+                <text x="784.5" y="290.0" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">81</text>
+                <rect x="794" y="210.1" width="15" height="249.9" rx="2" fill="#2563eb"/>
+                <text x="801.5" y="206.1" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">121</text>
+                <rect x="811" y="196.4" width="15" height="263.6" rx="2" fill="#7c3aed"/>
+                <text x="818.5" y="192.4" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">128</text>
+                <rect x="828" y="157.3" width="15" height="302.7" rx="2" fill="#b45309"/>
+                <text x="835.5" y="153.3" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">147</text>
+
+                <text x="904" y="480" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">Colorado</text>
+                <rect x="860" y="288.9" width="15" height="171.1" rx="2" fill="#0284c7"/>
+                <text x="867.5" y="284.9" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">83</text>
+                <rect x="877" y="294.7" width="15" height="165.3" rx="2" fill="#0d9488"/>
+                <text x="884.5" y="290.7" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">80</text>
+                <rect x="894" y="211.2" width="15" height="248.8" rx="2" fill="#2563eb"/>
+                <text x="901.5" y="207.2" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">121</text>
+                <rect x="911" y="197.6" width="15" height="262.4" rx="2" fill="#7c3aed"/>
+                <text x="918.5" y="193.6" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">128</text>
+                <rect x="928" y="158.7" width="15" height="301.3" rx="2" fill="#b45309"/>
+                <text x="935.5" y="154.7" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">146</text>
+
+                <text x="1004" y="480" font-size="11" font-weight="bold" fill="#1e293b" text-anchor="middle">Florida</text>
+                <rect x="960" y="291.6" width="15" height="168.4" rx="2" fill="#0284c7"/>
+                <text x="967.5" y="287.6" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">82</text>
+                <rect x="977" y="297.4" width="15" height="162.6" rx="2" fill="#0d9488"/>
+                <text x="984.5" y="293.4" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">79</text>
+                <rect x="994" y="215.2" width="15" height="244.8" rx="2" fill="#2563eb"/>
+                <text x="1001.5" y="211.2" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">119</text>
+                <rect x="1011" y="201.8" width="15" height="258.2" rx="2" fill="#7c3aed"/>
+                <text x="1018.5" y="197.8" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">126</text>
+                <rect x="1028" y="163.5" width="15" height="296.5" rx="2" fill="#b45309"/>
+                <text x="1035.5" y="159.5" font-size="8" font-weight="bold" fill="#475569" font-family="monospace" text-anchor="middle">144</text>
+            </svg>
+        </div>
+
+        <p class="takeaway-p">
+            <strong>Key Insight for Grads:</strong> If your graduating title is <strong>Data Analyst</strong>, taking an entry-level offer in California ($79,881 real) or New York ($81,595 real) leaves you financially constrained compared to North Carolina ($80,957 real) or Ohio ($79,536 real) despite a lower nominal number[cite: 1]. For <strong>Data Architects</strong>, the baseline salary is high enough to generate surplus capital in every market[cite: 1].
+        </p>
+    </section>
+
+    <!-- ACT III -->
+    <section class="act-container">
+        <div class="act-header">
+            <div class="act-title-group">
+                <h2>Act III: The Paycheck Autopsy &mdash; Decomposing Tax Bite vs. Price Inflation</h2>
+                <div class="act-subtitle">Isolating statutory state deductions against localized living cost premiums (Data Scientist benchmark)[cite: 1].</div>
+            </div>
+            <span class="act-tag">DECOMPOSITION WATERFALL</span>
+        </div>
+
+        <p class="narrative-p">
+            Where does your paycheck actually vanish? This waterfall breakdown decomposes the Data Scientist nominal gross salary into three distinct economic buckets: 
+            (1) <span style="color:#10b981; font-weight:700;">Real Retained Value</span> (actual purchasing power), 
+            (2) <span style="color:#f59e0b; font-weight:700;">Purchasing Power Drag</span> (value lost because goods and housing exceed national baseline), and 
+            (3) <span style="color:#f43f5e; font-weight:700;">State Income Tax</span> paid directly to the state revenue department (Tax Foundation State Tax Schedules)[cite: 1].
+        </p>
+
+        <div class="chart-wrapper">
+            <svg id="svgDecomp" viewBox="0 0 1100 480" preserveAspectRatio="xMidYMid meet">
+                <text x="50" y="24" font-size="13" font-weight="bold" fill="#0f172a">Data Scientist Earnings Decomposition: Retained Value vs. Price Drag vs. State Tax</text>
+                <rect x="580" y="14" width="12" height="12" rx="2" fill="#10b981"/>
+                <text x="598" y="24" font-size="11" font-weight="600" fill="#334155">Real Retained</text>
+                <rect x="730" y="14" width="12" height="12" rx="2" fill="#f59e0b"/>
+                <text x="748" y="24" font-size="11" font-weight="600" fill="#334155">COL Drag</text>
+                <rect x="850" y="14" width="12" height="12" rx="2" fill="#f43f5e"/>
+                <text x="868" y="24" font-size="11" font-weight="600" fill="#334155">State Tax</text>
+
+                <line x1="60" y1="325.0" x2="1060" y2="325.0" stroke="#f1f5f9" stroke-width="1"/>
+                <text x="52" y="329.0" font-size="10" fill="#94a3b8" text-anchor="end">$40k</text>
+                <line x1="60" y1="240.0" x2="1060" y2="240.0" stroke="#f1f5f9" stroke-width="1"/>
+                <text x="52" y="244.0" font-size="10" fill="#94a3b8" text-anchor="end">$80k</text>
+                <line x1="60" y1="155.0" x2="1060" y2="155.0" stroke="#f1f5f9" stroke-width="1"/>
+                <text x="52" y="159.0" font-size="10" fill="#94a3b8" text-anchor="end">$120k</text>
+                <line x1="60" y1="70.0" x2="1060" y2="70.0" stroke="#f1f5f9" stroke-width="1"/>
+                <text x="52" y="74.0" font-size="10" fill="#94a3b8" text-anchor="end">$160k</text>
+
+                <text x="109.0" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">CA</text>
+                <text x="109.0" y="444" font-size="9.5" fill="#64748b" text-anchor="middle">California</text>
+                <rect x="75" y="151.2" width="68" height="258.8" fill="#10b981"/>
+                <text x="109.0" y="284.6" font-size="10" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$122k</text>
+                <rect x="75" y="118.9" width="68" height="32.3" fill="#f59e0b"/>
+                <text x="109.0" y="139.1" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$15k</text>
+                <rect x="75" y="89.0" width="68" height="29.9" fill="#f43f5e" rx="2"/>
+                <text x="109.0" y="107.9" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$14k</text>
+                <text x="109.0" y="83.0" font-size="10.5" font-weight="bold" fill="#0f172a" font-family="monospace" text-anchor="middle">$151k</text>
+
+                <text x="209.0" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">NY</text>
+                <text x="209.0" y="444" font-size="9.5" fill="#64748b" text-anchor="middle">New York</text>
+                <rect x="175" y="145.6" width="68" height="264.4" fill="#10b981"/>
+                <text x="209.0" y="281.8" font-size="10" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$124k</text>
+                <rect x="175" y="118.6" width="68" height="27.0" fill="#f59e0b"/>
+                <text x="209.0" y="136.1" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$13k</text>
+                <rect x="175" y="97.2" width="68" height="21.4" fill="#f43f5e" rx="2"/>
+                <text x="209.0" y="111.9" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$10k</text>
+                <text x="209.0" y="91.2" font-size="10.5" font-weight="bold" fill="#0f172a" font-family="monospace" text-anchor="middle">$147k</text>
+
+                <text x="309.0" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">WA</text>
+                <text x="309.0" y="444" font-size="9.5" fill="#64748b" text-anchor="middle">Washington</text>
+                <rect x="275" y="127.4" width="68" height="282.6" fill="#10b981"/>
+                <text x="309.0" y="272.7" font-size="10" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$133k</text>
+                <rect x="275" y="105.4" width="68" height="22.0" fill="#f59e0b"/>
+                <text x="309.0" y="120.4" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$10k</text>
+                <text x="309.0" y="99.4" font-size="10.5" font-weight="bold" fill="#0f172a" font-family="monospace" text-anchor="middle">$143k</text>
+
+                <text x="409.0" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">MA</text>
+                <text x="409.0" y="444" font-size="9.5" fill="#64748b" text-anchor="middle">Massachusetts</text>
+                <rect x="375" y="147.8" width="68" height="262.2" fill="#10b981"/>
+                <text x="409.0" y="282.9" font-size="10" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$123k</text>
+                <rect x="375" y="125.8" width="68" height="22.0" fill="#f59e0b"/>
+                <text x="409.0" y="140.8" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$10k</text>
+                <rect x="375" y="110.8" width="68" height="15.0" fill="#f43f5e" rx="2"/>
+                <text x="409.0" y="122.3" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$7k</text>
+                <text x="409.0" y="104.8" font-size="10.5" font-weight="bold" fill="#0f172a" font-family="monospace" text-anchor="middle">$141k</text>
+
+                <text x="509.0" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">CO</text>
+                <text x="509.0" y="444" font-size="9.5" fill="#64748b" text-anchor="middle">Colorado</text>
+                <rect x="475" y="153.0" width="68" height="257.0" fill="#10b981"/>
+                <text x="509.0" y="285.5" font-size="10" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$121k</text>
+                <rect x="475" y="144.8" width="68" height="8.2" fill="#f59e0b"/>
+                <text x="509.0" y="152.9" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$4k</text>
+                <rect x="475" y="132.6" width="68" height="12.2" fill="#f43f5e" rx="2"/>
+                <text x="509.0" y="142.7" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$6k</text>
+                <text x="509.0" y="126.6" font-size="10.5" font-weight="bold" fill="#0f172a" font-family="monospace" text-anchor="middle">$131k</text>
+
+                <text x="609.0" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">IL</text>
+                <text x="609.0" y="444" font-size="9.5" fill="#64748b" text-anchor="middle">Illinois</text>
+                <rect x="575" y="146.7" width="68" height="263.3" fill="#10b981"/>
+                <text x="609.0" y="282.4" font-size="10" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$124k</text>
+                <rect x="575" y="133.2" width="68" height="13.5" fill="#f43f5e" rx="2"/>
+                <text x="609.0" y="144.0" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$6k</text>
+                <text x="609.0" y="127.2" font-size="10.5" font-weight="bold" fill="#0f172a" font-family="monospace" text-anchor="middle">$128k</text>
+
+                <text x="709.0" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">TX</text>
+                <text x="709.0" y="444" font-size="9.5" fill="#64748b" text-anchor="middle">Texas</text>
+                <rect x="675" y="136.3" width="68" height="273.7" fill="#10b981"/>
+                <text x="709.0" y="277.2" font-size="10" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$129k</text>
+                <text x="709.0" y="130.3" font-size="10.5" font-weight="bold" fill="#0f172a" font-family="monospace" text-anchor="middle">$125k</text>
+
+                <text x="809.0" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">NC</text>
+                <text x="809.0" y="444" font-size="9.5" fill="#64748b" text-anchor="middle">North Carolina</text>
+                <rect x="775" y="149.1" width="68" height="260.9" fill="#10b981"/>
+                <text x="809.0" y="283.5" font-size="10" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$123k</text>
+                <rect x="775" y="137.5" width="68" height="11.6" fill="#f43f5e" rx="2"/>
+                <text x="809.0" y="147.3" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$5k</text>
+                <text x="809.0" y="131.5" font-size="10.5" font-weight="bold" fill="#0f172a" font-family="monospace" text-anchor="middle">$122k</text>
+
+                <text x="909.0" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">FL</text>
+                <text x="909.0" y="444" font-size="9.5" fill="#64748b" text-anchor="middle">Florida</text>
+                <rect x="875" y="157.1" width="68" height="252.9" fill="#10b981"/>
+                <text x="909.0" y="287.6" font-size="10" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$119k</text>
+                <text x="909.0" y="151.1" font-size="10.5" font-weight="bold" fill="#0f172a" font-family="monospace" text-anchor="middle">$120k</text>
+
+                <text x="1009.0" y="430" font-size="12" font-weight="bold" fill="#1e293b" text-anchor="middle">OH</text>
+                <text x="1009.0" y="444" font-size="9.5" fill="#64748b" text-anchor="middle">Ohio</text>
+                <rect x="975" y="151.8" width="68" height="258.2" fill="#10b981"/>
+                <text x="1009.0" y="280.9" font-size="10" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$121k</text>
+                <rect x="975" y="143.2" width="68" height="8.6" fill="#f43f5e" rx="2"/>
+                <text x="1009.0" y="151.5" font-size="9" font-weight="bold" fill="#ffffff" font-family="monospace" text-anchor="middle">$4k</text>
+                <text x="1009.0" y="137.2" font-size="10.5" font-weight="bold" fill="#0f172a" font-family="monospace" text-anchor="middle">$115k</text>
+            </svg>
+        </div>
+
+        <p class="takeaway-p">
+            <strong>Key Insight for Grads:</strong> In California, over $14,000 vanishes instantly to state income tax, with another $15,200 eroded by regional price inflation. In Washington, $0 goes to state income tax, allowing a higher proportion of raw compensation to translate directly into wealth accumulation and investment.
+        </p>
+    </section>
+
+    <!-- ACT IV -->
+    <section class="act-container">
+        <div class="act-header">
+            <div class="act-title-group">
+                <h2>Act IV: Geographic Variance &amp; The State Tax-COL Friction Quadrant</h2>
+                <div class="act-subtitle">Statistical dispersion across roles and a two-variable macro landscape mapping where to build a career.</div>
+            </div>
+            <span class="act-tag">MACRO LANDSCAPE</span>
+        </div>
+
+        <p class="narrative-p">
+            The left chart visualizes the full range of real compensation spread across all 10 states for each role, with the orange diamond marking the cross-state average. The right chart maps states across two primary friction axes: <strong>Regional Price Parity</strong> (horizontal) vs. <strong>Effective State Tax Rate</strong> (vertical), with bubble size representing real retained salary (BEA &amp; Tax Foundation Normalized Model)[cite: 1].
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 20px;">
+            <div class="chart-wrapper">
+                <svg id="svgDispersion" viewBox="0 0 540 460" preserveAspectRatio="xMidYMid meet">
+                    <text x="20" y="24" font-size="12" font-weight="bold" fill="#0f172a">Purchasing Power Spread by Role (Min - Mean - Max)</text>
+                    <line x1="50" y1="290.0" x2="510" y2="290.0" stroke="#f1f5f9" stroke-width="1"/>
+                    <text x="44" y="294.0" font-size="9.5" fill="#94a3b8" text-anchor="end">$60k</text>
+                    <line x1="50" y1="216.7" x2="510" y2="216.7" stroke="#f1f5f9" stroke-width="1"/>
+                    <text x="44" y="220.7" font-size="9.5" fill="#94a3b8" text-anchor="end">$100k</text>
+                    <line x1="50" y1="143.3" x2="510" y2="143.3" stroke="#f1f5f9" stroke-width="1"/>
+                    <text x="44" y="147.3" font-size="9.5" fill="#94a3b8" text-anchor="end">$140k</text>
+                    <line x1="50" y1="70.0" x2="510" y2="70.0" stroke="#f1f5f9" stroke-width="1"/>
+                    <text x="44" y="74.0" font-size="9.5" fill="#94a3b8" text-anchor="end">$180k</text>
+
+                    <text x="96" y="418" font-size="10" font-weight="bold" fill="#1e293b" text-anchor="middle">Business</text>
+                    <rect x="70" y="232.4" width="52" height="17.6" rx="5" fill="rgba(56, 189, 248, 0.45)" stroke="#0284c7" stroke-width="1.5"/>
+                    <text x="96" y="262.0" font-size="9" font-weight="bold" fill="#0284c7" text-anchor="middle">$82k</text>
+                    <text x="96" y="226.4" font-size="9" font-weight="bold" fill="#0284c7" text-anchor="middle">$91k</text>
+                    <circle cx="96" cy="243.6" r="5" fill="#d97706"/>
+                    <text x="96" y="235.6" font-size="9.5" font-weight="bold" fill="#b45309" text-anchor="middle">$85k</text>
+
+                    <text x="188" y="418" font-size="10" font-weight="bold" fill="#1e293b" text-anchor="middle">Data</text>
+                    <rect x="162" y="238.1" width="52" height="17.0" rx="5" fill="rgba(56, 189, 248, 0.45)" stroke="#0284c7" stroke-width="1.5"/>
+                    <text x="188" y="267.1" font-size="9" font-weight="bold" fill="#0284c7" text-anchor="middle">$79k</text>
+                    <text x="188" y="232.1" font-size="9" font-weight="bold" fill="#0284c7" text-anchor="middle">$88k</text>
+                    <circle cx="188" cy="248.9" r="5" fill="#d97706"/>
+                    <text x="188" y="240.9" font-size="9.5" font-weight="bold" fill="#b45309" text-anchor="middle">$82k</text>
+
+                    <text x="280" y="418" font-size="10" font-weight="bold" fill="#1e293b" text-anchor="middle">Data Sci</text>
+                    <rect x="254" y="156.2" width="52" height="25.6" rx="5" fill="rgba(56, 189, 248, 0.45)" stroke="#0284c7" stroke-width="1.5"/>
+                    <text x="280" y="193.8" font-size="9" font-weight="bold" fill="#0284c7" text-anchor="middle">$119k</text>
+                    <text x="280" y="150.2" font-size="9" font-weight="bold" fill="#0284c7" text-anchor="middle">$133k</text>
+                    <circle cx="280" cy="172.6" r="5" fill="#d97706"/>
+                    <text x="280" y="164.6" font-size="9.5" font-weight="bold" fill="#b45309" text-anchor="middle">$124k</text>
+
+                    <text x="372" y="418" font-size="10" font-weight="bold" fill="#1e293b" text-anchor="middle">Data Eng</text>
+                    <rect x="346" y="142.9" width="52" height="27.0" rx="5" fill="rgba(56, 189, 248, 0.45)" stroke="#0284c7" stroke-width="1.5"/>
+                    <text x="372" y="181.9" font-size="9" font-weight="bold" fill="#0284c7" text-anchor="middle">$126k</text>
+                    <text x="372" y="136.9" font-size="9" font-weight="bold" fill="#0284c7" text-anchor="middle">$140k</text>
+                    <circle cx="372" cy="160.2" r="5" fill="#d97706"/>
+                    <text x="372" y="152.2" font-size="9.5" font-weight="bold" fill="#b45309" text-anchor="middle">$131k</text>
+
+                    <text x="464" y="418" font-size="10" font-weight="bold" fill="#1e293b" text-anchor="middle">Data Arch</text>
+                    <rect x="438" y="104.8" width="52" height="31.0" rx="5" fill="rgba(56, 189, 248, 0.45)" stroke="#0284c7" stroke-width="1.5"/>
+                    <text x="464" y="147.8" font-size="9" font-weight="bold" fill="#0284c7" text-anchor="middle">$144k</text>
+                    <text x="464" y="98.8" font-size="9" font-weight="bold" fill="#0284c7" text-anchor="middle">$161k</text>
+                    <circle cx="464" cy="124.7" r="5" fill="#d97706"/>
+                    <text x="464" y="116.7" font-size="9.5" font-weight="bold" fill="#b45309" text-anchor="middle">$150k</text>
+                </svg>
+            </div>
+            <div class="chart-wrapper">
+                <svg id="svgQuadrant" viewBox="0 0 540 460" preserveAspectRatio="xMidYMid meet">
+                    <text x="20" y="24" font-size="12" font-weight="bold" fill="#0f172a">State Tax Drag vs. Cost of Living Friction (Data Scientist)</text>
+                    <line x1="248.6" y1="50.0" x2="248.6" y2="390.0" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="4 4"/>
+                    <line x1="60.0" y1="244.3" x2="500.0" y2="244.3" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="4 4"/>
+                    <text x="70.0" y="380.0" font-size="9" font-weight="bold" fill="#10b981">LOW COL / LOW TAX (SWEET SPOT)</text>
+                    <text x="490.0" y="70.0" font-size="9" font-weight="bold" fill="#f43f5e" text-anchor="end">HIGH COL / HIGH TAX (DRAG)</text>
+                    <text x="60.0" y="410.0" font-size="9" fill="#64748b">88 RPP</text>
+                    <text x="248.6" y="410.0" font-size="9.5" font-weight="bold" fill="#334155" text-anchor="middle">100 (US Avg)</text>
+                    <text x="500.0" y="410.0" font-size="9" fill="#64748b" text-anchor="end">116 RPP</text>
+                    <text x="280.0" y="426.0" font-size="10" font-weight="bold" fill="#1e293b" text-anchor="middle">BEA Regional Price Parity Index</text>
+                    <text x="52.0" y="390.0" font-size="9" fill="#64748b" text-anchor="end">0%</text>
+                    <text x="52.0" y="244.3" font-size="9" fill="#64748b" text-anchor="end">4.5%</text>
+                    <text x="52.0" y="60.0" font-size="9" fill="#64748b" text-anchor="end">10%</text>
+                    <text x="44.0" y="220.0" font-size="10" font-weight="bold" fill="#1e293b" text-anchor="middle" transform="rotate(-90 44.0 220.0)">State Income Tax Rate</text>
+
+                    <circle cx="445.0" cy="88.9" r="18" fill="rgba(29, 78, 216, 0.75)" stroke="#1e3a8a" stroke-width="1.5"/>
+                    <text x="445.0" y="66.9" font-size="9.5" font-weight="bold" fill="#0f172a" text-anchor="middle">CA: $122k</text>
+                    <circle cx="408.9" cy="168.2" r="18" fill="rgba(29, 78, 216, 0.75)" stroke="#1e3a8a" stroke-width="1.5"/>
+                    <text x="408.9" y="146.2" font-size="9.5" font-weight="bold" fill="#0f172a" text-anchor="middle">NY: $124k</text>
+                    <circle cx="380.6" cy="228.1" r="18" fill="rgba(29, 78, 216, 0.75)" stroke="#1e3a8a" stroke-width="1.5"/>
+                    <text x="380.6" y="206.1" font-size="9.5" font-weight="bold" fill="#0f172a" text-anchor="middle">MA: $123k</text>
+                    <circle cx="371.1" cy="390.0" r="20" fill="rgba(29, 78, 216, 0.75)" stroke="#1e3a8a" stroke-width="1.5"/>
+                    <text x="371.1" y="366.0" font-size="9.5" font-weight="bold" fill="#0f172a" text-anchor="middle">WA: $133k</text>
+                    <circle cx="298.9" cy="247.5" r="18" fill="rgba(29, 78, 216, 0.75)" stroke="#1e3a8a" stroke-width="1.5"/>
+                    <text x="298.9" y="225.5" font-size="9.5" font-weight="bold" fill="#0f172a" text-anchor="middle">CO: $121k</text>
+                    <circle cx="220.3" cy="229.7" r="18" fill="rgba(29, 78, 216, 0.75)" stroke="#1e3a8a" stroke-width="1.5"/>
+                    <text x="220.3" y="207.7" font-size="9.5" font-weight="bold" fill="#0f172a" text-anchor="middle">IL: $124k</text>
+                    <circle cx="207.7" cy="390.0" r="19" fill="rgba(29, 78, 216, 0.75)" stroke="#1e3a8a" stroke-width="1.5"/>
+                    <text x="207.7" y="367.0" font-size="9.5" font-weight="bold" fill="#0f172a" text-anchor="middle">TX: $129k</text>
+                    <circle cx="163.7" cy="244.3" r="18" fill="rgba(29, 78, 216, 0.75)" stroke="#1e3a8a" stroke-width="1.5"/>
+                    <text x="163.7" y="222.3" font-size="9.5" font-weight="bold" fill="#0f172a" text-anchor="middle">NC: $123k</text>
+                    <circle cx="265.9" cy="390.0" r="17" fill="rgba(29, 78, 216, 0.75)" stroke="#1e3a8a" stroke-width="1.5"/>
+                    <text x="265.9" y="369.0" font-size="9.5" font-weight="bold" fill="#0f172a" text-anchor="middle">FL: $119k</text>
+                    <circle cx="115.0" cy="276.7" r="18" fill="rgba(29, 78, 216, 0.75)" stroke="#1e3a8a" stroke-width="1.5"/>
+                    <text x="115.0" y="254.7" font-size="9.5" font-weight="bold" fill="#0f172a" text-anchor="middle">OH: $121k</text>
+                </svg>
+            </div>
+        </div>
+
+        <p class="takeaway-p">
+            <strong>Key Insight for Grads:</strong> The "Sweet Spot" on the quadrant chart is the <strong>bottom-left</strong> (low cost of living, low or zero state tax). States like Texas and North Carolina occupy prime positions, while Washington offers a unique high-compensation, zero-tax shelter despite a moderate cost of living.
+        </p>
+    </section>
+
+    <!-- ACT V -->
+    <section class="act-container">
+        <div class="act-header">
+            <div class="act-title-group">
+                <h2>Act V: Reference Methodology &amp; Data Standards</h2>
+                <div class="act-subtitle">Official federal and public economic datasets utilized in the mathematical pipeline.</div>
+            </div>
+            <span class="act-tag">STANDARDS</span>
+        </div>
+
+        <p class="narrative-p">
+            To ensure complete reproducibility and academic rigor, all computations rely on standardized public benchmarks (BLS OEWS, BEA RPP, Tax Foundation)[cite: 1].
+        </p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Authoritative Benchmark</th>
+                        <th>Classification / Standard Metric</th>
+                        <th>Applied Method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Salary Baselines</strong></td>
+                        <td>U.S. Bureau of Labor Statistics (BLS) OEWS</td>
+                        <td>SOC 15-2051 (Data Scientists), 15-1251 (Engineers), 13-1111 (Analysts)[cite: 1]</td>
+                        <td>National median base &times; Local market multiplier</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost of Living (COL)</strong></td>
+                        <td>U.S. Bureau of Economic Analysis (BEA)</td>
+                        <td>Regional Price Parities (RPP) by State (US Baseline = 100.0)[cite: 1]</td>
+                        <td>Real Value = (Post-Tax Net / RPP) &times; 100</td>
+                    </tr>
+                    <tr>
+                        <td><strong>State Taxation</strong></td>
+                        <td>Tax Foundation / State Revenue Schedules</td>
+                        <td>Effective Individual Income Tax Rates for $100k&ndash;$200k bracket[cite: 1]</td>
+                        <td>Tax Paid = Gross Salary &times; Effective State Rate</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ACT VI -->
+    <section class="act-container">
+        <div class="act-header">
+            <div class="act-title-group">
+                <h2>Act VI: The Graduating Practitioner's Decision Playbook</h2>
+                <div class="act-subtitle">Actionable rules of thumb when negotiating and accepting your first data role.</div>
+            </div>
+            <span class="act-tag">EXECUTIVE RULES</span>
+        </div>
+
+        <div class="playbook-grid">
+            <div class="rule-card emerald">
+                <div class="rule-num">RULE 01 // OFFER CONVERSION RATIO</div>
+                <div class="rule-title">Calculate the Real Purchasing Multiplier</div>
+                <div class="rule-body">
+                    Never accept an offer based on nominal compensation alone. Apply the <strong>0.806 California Rule</strong>: a $150k offer in the Bay Area has the exact same real purchasing power as a $121.7k offer in an average cost-of-living state. If a remote or secondary-hub offer pays &gt;$125k, it is strictly superior in disposable wealth.
+                </div>
+            </div>
+
+            <div class="rule-card amber">
+                <div class="rule-num">RULE 02 // ROLE SPECIALIZATION ARBITRAGE</div>
+                <div class="rule-title">Target Infrastructure Engineering Early</div>
+                <div class="rule-body">
+                    Data engineering and architecture tracks maintain significantly higher compensation floors than generalist analyst roles. If you must start in a high-cost coastal market for network effects, prioritize <strong>Data Engineering</strong> titles, which retain ~$128k+ in real value even under heavy coastal tax burdens.
+                </div>
+            </div>
+
+            <div class="rule-card rose">
+                <div class="rule-num">RULE 03 // TAX SHELTER STRATEGY</div>
+                <div class="rule-title">Leverage Zero-Income-Tax Hubs</div>
+                <div class="rule-body">
+                    Washington (Seattle) and Texas (Austin/Dallas) function as economic accelerators for early-career professionals. Washington offers tier-1 tech compensation density without state income tax drag, providing the highest real take-home value of any analyzed market in the United States.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Story 4: Data Practitioner Salary Analysis | 100% Pre-Rendered Standalone HTML + Inline SVG</p>
+    </footer>
+
+</div>
+
+<!-- 100% RELIABLE 5-LINE SWITCHER (NO EXTERNAL LIBRARIES, NO NETWORK CALLS) -->
+<script>
+function showRole(roleId) {
+    var charts = document.querySelectorAll('.diverging-chart');
+    for (var i = 0; i < charts.length; i++) {
+        charts[i].style.display = 'none';
+    }
+    var btns = document.querySelectorAll('.btn-role');
+    for (var j = 0; j < btns.length; j++) {
+        btns[j].classList.remove('active');
+    }
+    var target = document.getElementById('svgDiverging_' + roleId);
+    if (target) {
+        target.style.display = 'block';
+    }
+    for (var k = 0; k < btns.length; k++) {
+        if (btns[k].getAttribute('data-role') === roleId) {
+            btns[k].classList.add('active');
+        }
+    }
+}
+</script>
+
+</body>
+</html>
